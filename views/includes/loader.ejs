@@ -1,0 +1,130 @@
+<div id="globalLoader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+  <div class="relative flex flex-col items-center space-y-4 p-8 bg-white rounded-3xl border border-gray-100 shadow-2xl">
+    <div class="relative w-16 h-16 flex items-center justify-center">
+      <div class="absolute inset-0 rounded-full border-4 border-red-100 border-t-[#fe424d] animate-spin"></div>
+      <div class="w-10 h-10 rounded-full bg-red-50 text-[#fe424d] flex items-center justify-center shadow-xs">
+        <i data-lucide="compass" class="w-6 h-6 stroke-[2.5] animate-pulse"></i>
+      </div>
+    </div>
+
+    <div class="text-center space-y-1">
+      <p id="loaderMessage" class="text-base font-bold text-gray-900 tracking-tight">Processing request...</p>
+      <p class="text-xs text-gray-500 font-medium">Please wait a moment</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showLoader(message = "Processing request...") {
+    const loader = document.getElementById('globalLoader');
+    const msgEl = document.getElementById('loaderMessage');
+    if (loader) {
+      if (msgEl) msgEl.textContent = message;
+      loader.classList.remove('opacity-0', 'pointer-events-none');
+      loader.classList.add('opacity-100');
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+
+  function hideLoader() {
+    const loader = document.getElementById('globalLoader');
+    if (loader) {
+      loader.classList.remove('opacity-100');
+      loader.classList.add('opacity-0', 'pointer-events-none');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('form').forEach((form) => {
+      form.addEventListener('submit', function (e) {
+        // Clear previous Zod inline error messages
+        form.querySelectorAll('.zod-error-msg').forEach((el) => el.remove());
+
+        let isValid = true;
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+        const action = (this.action || "").toLowerCase();
+
+        // Perform Zod validation on Auth forms
+        if (window.Zod && window.Zod.z) {
+          const z = window.Zod.z;
+
+          if (action.includes("login")) {
+            const loginSchema = z.object({
+              username: z.string().min(1, { message: "Username is required." }),
+              password: z.string().min(1, { message: "Password is required." })
+            });
+
+            const result = loginSchema.safeParse(data);
+            if (!result.success) {
+              isValid = false;
+              result.error.issues.forEach((issue) => {
+                const fieldName = issue.path[0];
+                const inputEl = form.querySelector(`[name="${fieldName}"]`);
+                if (inputEl) {
+                  const errDiv = document.createElement('div');
+                  errDiv.className = 'zod-error-msg text-xs text-rose-500 font-medium mt-1 flex items-center gap-1';
+                  errDiv.innerHTML = `<i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> <span>${issue.message}</span>`;
+                  const parentDiv = inputEl.closest('.relative') || inputEl;
+                  parentDiv.after(errDiv);
+                }
+              });
+            }
+          } else if (action.includes("signup")) {
+            const signupSchema = z.object({
+              username: z.string().min(3, { message: "Username must be at least 3 characters." }),
+              email: z.string().email({ message: "Please enter a valid email address." }),
+              password: z.string().min(4, { message: "Password must be at least 4 characters." })
+            });
+
+            const result = signupSchema.safeParse(data);
+            if (!result.success) {
+              isValid = false;
+              result.error.issues.forEach((issue) => {
+                const fieldName = issue.path[0];
+                const inputEl = form.querySelector(`[name="${fieldName}"]`);
+                if (inputEl) {
+                  const errDiv = document.createElement('div');
+                  errDiv.className = 'zod-error-msg text-xs text-rose-500 font-medium mt-1 flex items-center gap-1';
+                  errDiv.innerHTML = `<i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> <span>${issue.message}</span>`;
+                  const parentDiv = inputEl.closest('.relative') || inputEl;
+                  parentDiv.after(errDiv);
+                }
+              });
+            }
+          }
+        }
+
+        // HTML5 Validation Check
+        if (!this.checkValidity()) {
+          isValid = false;
+          this.reportValidity();
+        }
+
+        // Stop execution if validation fails
+        if (!isValid) {
+          e.preventDefault();
+          if (window.lucide) window.lucide.createIcons();
+          return;
+        }
+
+        // Show Loader only after successful validation
+        const submitBtn = this.querySelector('button[type="submit"], button:not([type="button"])');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+        }
+
+        let msg = "Processing request...";
+        if (action.includes("login")) msg = "Logging in...";
+        else if (action.includes("signup")) msg = "Creating your account...";
+        else if (action.includes("reviews")) msg = "Updating reviews...";
+        else if (action.includes("_method=delete")) msg = "Deleting item...";
+        else if (action.includes("edit") || action.includes("_method=put")) msg = "Saving changes...";
+        else if (action.includes("listings")) msg = "Saving listing...";
+
+        showLoader(msg);
+      });
+    });
+  });
+</script>

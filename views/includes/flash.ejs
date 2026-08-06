@@ -1,0 +1,62 @@
+<% if(success && success.length){ %>
+  <div id="toastSuccess" class="fixed top-20 right-5 z-50 max-w-md w-full px-4 sm:px-0 transform transition-all duration-300">
+    <div class="bg-white border border-emerald-200 rounded-2xl shadow-xl overflow-hidden flex flex-col">
+      <div class="p-4 flex items-start gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+          <i data-lucide="check-circle-2" class="w-5 h-5 stroke-[2.2]"></i>
+        </div>
+        <div class="flex-1 pt-0.5">
+          <h4 class="text-sm font-bold text-gray-900">Success</h4>
+          <p class="text-xs text-gray-600 mt-0.5 leading-relaxed"><%= success %></p>
+        </div>
+        <button onclick="dismissToast('toastSuccess')" type="button" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg border-0 bg-transparent cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="h-1 bg-emerald-500 w-full animate-toast-progress origin-left"></div>
+    </div>
+  </div>
+<% } %>
+
+<% if(error && error.length){ %>
+  <div id="toastError" class="fixed top-20 right-5 z-50 max-w-md w-full px-4 sm:px-0 transform transition-all duration-300">
+    <div class="bg-white border border-rose-200 rounded-2xl shadow-xl overflow-hidden flex flex-col">
+      <div class="p-4 flex items-start gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+          <i data-lucide="alert-circle" class="w-5 h-5 stroke-[2.2]"></i>
+        </div>
+        <div class="flex-1 pt-0.5">
+          <h4 class="text-sm font-bold text-gray-900">Notice</h4>
+          <p class="text-xs text-gray-600 mt-0.5 leading-relaxed"><%= error %></p>
+        </div>
+        <button onclick="dismissToast('toastError')" type="button" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg border-0 bg-transparent cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="h-1 bg-rose-500 w-full animate-toast-progress origin-left"></div>
+    </div>
+  </div>
+<% } %>
+
+<script>
+  function dismissToast(toastId) {
+    const el = document.getElementById(toastId);
+    if (el) {
+      el.classList.add('opacity-0', 'translate-x-10');
+      setTimeout(() => el.remove(), 300);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.lucide) window.lucide.createIcons();
+
+    ['toastSuccess', 'toastError'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => {
+          dismissToast(id);
+        }, 4000);
+      }
+    });
+  });
+</script>

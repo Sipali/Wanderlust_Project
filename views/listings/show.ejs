@@ -1,0 +1,241 @@
+<% layout("/layouts/boilerplate") %>
+
+  <div class="max-w-4xl mx-auto py-4">
+    <!-- Back Button Navigation -->
+    <div class="mb-4">
+      <button onclick="history.back()"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-700 hover:text-black hover:bg-gray-100 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>Back</span>
+      </button>
+    </div>
+
+    <!-- Title & Location Header -->
+    <div class="mb-6">
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">
+        <%= listing.title %>
+      </h1>
+      <div class="flex items-center gap-4 text-sm text-gray-600">
+        <span class="flex items-center gap-1.5 font-medium">
+          <i class="fa-solid fa-location-dot text-[#fe424d]"></i>
+          <%= listing.location %>, <%= listing.country %>
+        </span>
+        <span>•</span>
+        <span class="flex items-center gap-1.5 text-gray-700 bg-gray-100 px-3 py-1 rounded-full text-xs font-semibold">
+          <i class="fa-solid fa-user-shield text-[#fe424d]"></i>
+          Hosted by <%= listing.owner ? listing.owner.username : 'Host' %>
+        </span>
+      </div>
+    </div>
+
+    <!-- Image Gallery Banner -->
+    <div class="relative rounded-3xl overflow-hidden shadow-lg border border-gray-200 mb-8 max-h-[480px]">
+      <img src="<%= listing.image.url %>" class="w-full h-full object-cover max-h-[480px]" alt="listings_image" />
+    </div>
+
+    <!-- Details & Booking Card Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+      <div class="md:col-span-2 space-y-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+          <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-[#fe424d]"></i>
+            About this stay
+          </h2>
+          <p class="text-gray-700 leading-relaxed text-base">
+            <%= listing.description %>
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs uppercase font-bold tracking-wider text-gray-400">Price per night</span>
+            <div class="text-2xl font-extrabold text-gray-900 mt-1">
+              &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %>
+            </div>
+          </div>
+          <div class="text-right">
+            <span
+              class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
+              <i class="fa-solid fa-shield-check text-emerald-500"></i> Best Price Guarantee
+            </span>
+          </div>
+        </div>
+
+        <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
+          <div class="flex items-center gap-4 pt-2">
+            <a href="/listings/<%= listing._id %>/edit"
+              class="px-6 py-2.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-all duration-200 text-sm flex items-center gap-2 decoration-none">
+              <i class="fa-regular fa-pen-to-square"></i> Edit Listing
+            </a>
+
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="inline">
+              <button
+                class="px-6 py-2.5 bg-rose-600 text-white font-semibold rounded-xl hover:bg-rose-700 transition-all duration-200 text-sm flex items-center gap-2 border-0 cursor-pointer">
+                <i class="fa-regular fa-trash-can"></i> Delete Listing
+              </button>
+            </form>
+          </div>
+          <% } %>
+      </div>
+
+      <!-- Quick Info Sidebar Card -->
+      <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 h-fit space-y-4">
+        <h3 class="font-bold text-gray-900 text-base border-b border-gray-200 pb-3">Property Highlights</h3>
+        <div class="flex items-center gap-3 text-sm text-gray-700">
+          <i class="fa-solid fa-wifi text-[#fe424d] w-5"></i>
+          <span>Free High-Speed Wi-Fi</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm text-gray-700">
+          <i class="fa-solid fa-square-parking text-[#fe424d] w-5"></i>
+          <span>Free Parking on Premises</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm text-gray-700">
+          <i class="fa-solid fa-snowflake text-[#fe424d] w-5"></i>
+          <span>Air Conditioning</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm text-gray-700">
+          <i class="fa-solid fa-kitchen-set text-[#fe424d] w-5"></i>
+          <span>Fully Equipped Kitchen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OpenStreetMap (Leaflet) Location Section -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-gray-200 shadow-sm mb-10">
+      <h3 class="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-map-location-dot text-[#fe424d]"></i>
+        Where you'll be
+      </h3>
+      <p class="text-sm text-gray-500 mb-4 flex items-center gap-1.5">
+        <i class="fa-solid fa-location-dot text-[#fe424d] text-xs"></i>
+        <span>
+          <%= listing.location %>, <%= listing.country %>
+        </span>
+      </p>
+
+      <!-- Map Container -->
+      <div id="map" class="w-full rounded-2xl overflow-hidden border border-gray-200 shadow-inner z-0"
+        style="height: 380px; min-height: 350px; width: 100%;">
+      </div>
+
+      <!-- Fallback Container if coordinates unavailable -->
+      <div id="mapFallback"
+        class="hidden bg-gray-50 border border-gray-200 text-gray-600 rounded-2xl p-8 text-center my-2">
+        <i data-lucide="map-pin-off" class="w-8 h-8 mx-auto text-gray-400 mb-2"></i>
+        <p class="font-semibold text-gray-700">Location is not available for this listing.</p>
+      </div>
+    </div>
+
+    <script>
+      const listing = <%- JSON.stringify(typeof listing !== "undefined" ? listing : {}) %>;
+      console.log(listing);
+    </script>
+    <script src="/js/map.js"></script>
+
+    <hr class="border-gray-200 my-10" />
+
+    <!-- Reviews Section -->
+    <div>
+      <% if(currUser){ %>
+        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-gray-200 shadow-sm mb-10">
+          <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <i class="fa-regular fa-comment-dots text-[#fe424d]"></i>
+            Leave a Review
+          </h3>
+
+          <form action="/listings/<%= listing.id %>/reviews" method="POST" novalidate
+            class="needs-validation space-y-4">
+            <div>
+              <label for="rating" class="block text-sm font-semibold text-gray-700 mb-2">Rating</label>
+              <fieldset class="starability-slot">
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked />
+                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                <label for="first-rate1">1 star</label>
+
+                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                <label for="first-rate2">2 stars</label>
+
+                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                <label for="first-rate3">3 stars</label>
+
+                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                <label for="first-rate4">4 stars</label>
+
+                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                <label for="first-rate5">5 stars</label>
+              </fieldset>
+            </div>
+
+            <div>
+              <label for="comment" class="block text-sm font-semibold text-gray-700 mb-2">Your Review Comments</label>
+              <textarea name="review[comment]" id="comment" cols="30" rows="4"
+                class="w-full rounded-2xl border-gray-300 focus:border-[#fe424d] focus:ring-[#fe424d] p-4 text-sm shadow-sm transition-all border"
+                placeholder="Share details of your experience at this place..." required></textarea>
+              <div class="invalid-feedback text-xs text-rose-500 mt-1">Please add some comments for review</div>
+            </div>
+
+            <button
+              class="px-6 py-2.5 bg-[#fe424d] text-white font-semibold rounded-xl hover:bg-[#e0323d] transition-all shadow-sm border-0 cursor-pointer text-sm">
+              Submit Review
+            </button>
+          </form>
+        </div>
+        <% } %>
+
+          <div class="mb-6">
+            <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <i class="fa-solid fa-star text-amber-400"></i>
+              Guest Reviews
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <% for (let eachListing of allListings) { %>
+              <% for (let review of eachListing.reviews) { %>
+                <div
+                  class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between space-y-3">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <div class="flex items-center gap-2">
+                        <div
+                          class="w-8 h-8 rounded-full bg-red-100 text-[#fe424d] font-bold flex items-center justify-center text-xs">
+                          <%= review.author.username.charAt(0).toUpperCase() %>
+                        </div>
+                        <div>
+                          <h4 class="font-bold text-gray-900 text-sm">@<%= review.author.username %></h4>
+                          <span class="text-[10px] text-gray-400 font-medium format-relative-date" data-date="<%= review.createdAt ? review.createdAt.toISOString() : '' %>"></span>
+                        </div>
+                      </div>
+                      <p class="starability-result scale-75 origin-right m-0" data-rating="<%= review.rating %>"></p>
+                    </div>
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                      <%= review.comment %>
+                    </p>
+                  </div>
+
+                  <form method="POST" action="/listings/<%= eachListing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                    class="pt-2 border-t border-gray-100 flex justify-end">
+                    <button
+                      class="px-3 py-1 bg-gray-100 text-gray-600 hover:bg-rose-50 hover:text-rose-600 rounded-lg text-xs font-semibold transition-all border-0 cursor-pointer">
+                      Delete Review
+                    </button>
+                  </form>
+                </div>
+                <% } %>
+                  <% } %>
+          </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof dayjs !== "undefined") {
+        document.querySelectorAll(".format-relative-date").forEach(el => {
+          const rawDate = el.getAttribute("data-date");
+          if (rawDate) {
+            el.textContent = dayjs(rawDate).fromNow();
+          }
+        });
+      }
+    });
+  </script>

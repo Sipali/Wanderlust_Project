@@ -1,0 +1,62 @@
+<div id="logoutModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs opacity-0 pointer-events-none transition-all duration-300">
+  <div id="logoutModalCard" class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full border border-gray-100 shadow-2xl transform scale-95 transition-all duration-300 space-y-5">
+    
+    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+      <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center shadow-xs">
+        <i data-lucide="log-out" class="w-6 h-6 stroke-[2.2]"></i>
+      </div>
+      <button onclick="closeLogoutModal()" type="button" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 flex items-center justify-center transition-all border-0 cursor-pointer">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <div>
+      <h3 class="text-xl font-bold text-gray-900 mb-1">Confirm Log Out</h3>
+      <p class="text-sm text-gray-500 leading-relaxed">Are you sure you want to log out of your Wanderlust account?</p>
+    </div>
+
+    <div class="flex items-center gap-3 pt-2">
+      <button onclick="closeLogoutModal()" type="button" class="flex-1 py-2.5 px-4 rounded-xl border border-gray-300 text-gray-700 font-semibold text-sm hover:bg-gray-100 transition-all border-0 cursor-pointer text-center">
+        Cancel
+      </button>
+      <a href="/logout" class="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm shadow-sm transition-all text-center decoration-none flex items-center justify-center gap-1.5 !text-white">
+        <i data-lucide="log-out" class="w-4 h-4"></i>
+        <span>Log Out</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openLogoutModal() {
+    const modal = document.getElementById('logoutModal');
+    const card = document.getElementById('logoutModalCard');
+    if (modal && card) {
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      card.classList.remove('scale-95');
+      card.classList.add('scale-100');
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+
+  function closeLogoutModal() {
+    const modal = document.getElementById('logoutModal');
+    const card = document.getElementById('logoutModalCard');
+    if (modal && card) {
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      card.classList.remove('scale-100');
+      card.classList.add('scale-95');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('logoutModal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeLogoutModal();
+      });
+    }
+  });
+</script>

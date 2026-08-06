@@ -1,0 +1,200 @@
+<% layout("/layouts/boilerplate") %>
+
+<% if(!currUser) { %>
+  <div class="bg-gradient-to-r from-[#fe424d] to-rose-600 rounded-3xl p-6 sm:p-8 text-white shadow-lg mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Welcome to Wanderlust</h1>
+      <p class="text-red-100 text-sm sm:text-base max-w-xl">Discover incredible homes, cozy cabins, and luxury villas around the world. Sign up or log in to host your property & leave reviews!</p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0 w-full sm:w-auto">
+      <a href="/login" class="w-1/2 sm:w-auto text-center px-6 py-3 bg-white text-[#fe424d] font-bold rounded-xl hover:bg-gray-100 transition-all shadow-sm text-sm decoration-none">
+        Log in
+      </a>
+      <a href="/signup" class="w-1/2 sm:w-auto text-center px-6 py-3 bg-black/30 border border-white/40 text-white font-bold rounded-xl hover:bg-black/50 transition-all text-sm decoration-none">
+        Sign up
+      </a>
+    </div>
+  </div>
+<% } %>
+
+<% const activeCat = typeof selectedCategory !== "undefined" ? selectedCategory : ""; %>
+
+<div class="relative mb-8">
+  <button onclick="scrollCategoryFilter(-240)" type="button" aria-label="Scroll left" class="hidden sm:flex absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md text-gray-700 hover:text-black hover:bg-gray-50 items-center justify-center cursor-pointer transition-all border-0">
+    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+  </button>
+  
+  <div id="categoryFilterBar" class="flex items-center gap-8 overflow-x-auto pb-3 pt-2 px-1 scrollbar-none text-gray-600 scroll-smooth">
+    <a href="/listings" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= !activeCat ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-[#fe424d] fa-globe text-xl"></i>
+      <span class="text-xs">All Places</span>
+    </a>
+    <a href="/listings?category=Trending" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Trending' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-fire text-xl"></i>
+      <span class="text-xs">Trending</span>
+    </a>
+    <a href="/listings?category=Rooms" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Rooms' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-bed text-xl"></i>
+      <span class="text-xs">Rooms</span>
+    </a>
+    <a href="/listings?category=Iconic Cities" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Iconic Cities' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-city text-xl"></i>
+      <span class="text-xs">Iconic Cities</span>
+    </a>
+    <a href="/listings?category=Mountains" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Mountains' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-mountain text-xl"></i>
+      <span class="text-xs">Mountains</span>
+    </a>
+    <a href="/listings?category=Castles" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Castles' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-fort-awesome text-xl"></i>
+      <span class="text-xs">Castles</span>
+    </a>
+    <a href="/listings?category=Amazing Views" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Amazing Views' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-eye text-xl"></i>
+      <span class="text-xs">Amazing Views</span>
+    </a>
+    <a href="/listings?category=Farms" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Farms' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-cow text-xl"></i>
+      <span class="text-xs">Farms</span>
+    </a>
+    <a href="/listings?category=Beach" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Beach' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-[#fe424d] fa-umbrella-beach text-xl"></i>
+      <span class="text-xs">Beach</span>
+    </a>
+    <a href="/listings?category=Camping" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Camping' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-campground text-xl"></i>
+      <span class="text-xs">Camping</span>
+    </a>
+    <a href="/listings?category=Arctic" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Arctic' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-regular fa-snowflake text-xl"></i>
+      <span class="text-xs">Arctic</span>
+    </a>
+    <a href="/listings?category=Domes" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Domes' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-igloo text-xl"></i>
+      <span class="text-xs">Domes</span>
+    </a>
+    <a href="/listings?category=Boats" class="flex flex-col items-center gap-2 cursor-pointer shrink-0 transition-transform hover:scale-105 decoration-none <%= activeCat === 'Boats' ? 'text-[#fe424d] font-bold pb-1 border-b-2 border-[#fe424d]' : 'hover:text-[#fe424d] text-gray-600' %>">
+      <i class="fa-solid fa-ship text-xl"></i>
+      <span class="text-xs">Boats</span>
+    </a>
+  </div>
+
+  <button onclick="scrollCategoryFilter(240)" type="button" aria-label="Scroll right" class="hidden sm:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md text-gray-700 hover:text-black hover:bg-gray-50 items-center justify-center cursor-pointer transition-all border-0">
+    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+  </button>
+</div>
+
+<% const activeSearch = typeof searchQuery !== "undefined" ? searchQuery : ""; %>
+
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 tracking-tight">
+      <% if(activeSearch) { %>
+        Search Results for "<%= activeSearch %>"
+      <% } else if(activeCat) { %>
+        <%= activeCat %> Stays
+      <% } else { %>
+        Explore Places to Stay
+      <% } %>
+    </h2>
+    <div class="flex items-center gap-2 mt-0.5">
+      <span class="text-xs font-medium text-gray-500"><%= allListings.length %> Places available</span>
+      <% if(activeSearch) { %>
+        <a href="/listings" class="text-xs text-[#fe424d] font-semibold hover:underline decoration-none flex items-center gap-1">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+          <span>Clear search</span>
+        </a>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-3 bg-white p-2.5 px-4 rounded-2xl border border-gray-200 shadow-xs">
+    <span class="text-xs font-semibold text-gray-700">Display total after taxes</span>
+    <label class="relative inline-flex items-center cursor-pointer">
+      <input type="checkbox" id="taxToggle" onchange="toggleTaxDisplay()" class="sr-only peer">
+      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#fe424d]"></div>
+    </label>
+  </div>
+</div>
+
+<% if(allListings.length === 0) { %>
+  <div class="bg-white rounded-3xl p-12 text-center max-w-md mx-auto border border-gray-200 shadow-sm space-y-4 my-8">
+    <div class="w-16 h-16 bg-red-50 text-[#fe424d] rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold">
+      <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+    </div>
+    <h3 class="text-xl font-extrabold text-gray-900">
+      <%= activeSearch ? `No stays found for "${activeSearch}"` : `No stays in ${activeCat || 'this category'}` %>
+    </h3>
+    <p class="text-xs text-gray-500 max-w-xs mx-auto leading-relaxed">We couldn't find any stays matching your query. Try searching another destination or clear filters!</p>
+    <a href="/listings" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#fe424d] text-white font-bold rounded-xl hover:bg-[#e0323d] transition-all shadow-sm text-xs decoration-none !text-white">
+      <span>View All Places</span>
+    </a>
+  </div>
+<% } else { %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <% for(let listing of allListings){ %>
+      <a href="/listings/<%= listing._id %>" class="group block listing-link decoration-none">
+        <div class="bg-white rounded-2xl overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl border border-gray-100 flex flex-col h-full">
+          <div class="relative overflow-hidden aspect-[4/3] bg-gray-100">
+            <img
+              src="<%= listing.image.url %>"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              alt="listing_image"
+              loading="lazy"
+            />
+            <div class="absolute top-3 right-3 bg-white/80 backdrop-blur-md p-2 rounded-full text-gray-700 hover:text-[#fe424d] transition-colors shadow-sm">
+              <i class="fa-regular fa-heart text-sm"></i>
+            </div>
+            <% if (listing.location) { %>
+              <div class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full text-white text-xs font-medium flex items-center gap-1">
+                <i class="fa-solid fa-location-dot text-[#fe424d] text-[10px]"></i>
+                <span><%= listing.location %></span>
+              </div>
+            <% } %>
+          </div>
+          <div class="p-4 flex flex-col justify-between flex-grow">
+            <div>
+              <h3 class="font-bold text-gray-900 text-base mb-1 truncate group-hover:text-[#fe424d] transition-colors">
+                <%= listing.title %>
+              </h3>
+              <div class="flex items-center justify-between text-xs text-gray-500 mb-2">
+                <span class="truncate"><%= listing.country ? listing.country : 'Worldwide' %></span>
+                <% if(listing.category) { %>
+                  <span class="bg-red-50 text-[#fe424d] px-2 py-0.5 rounded-full text-[10px] font-semibold"><%= listing.category %></span>
+                <% } %>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-1 mt-2 pt-2 border-t border-gray-100">
+              <% const basePrice = listing.price ? listing.price : 0; %>
+              <% const taxPrice = Math.round(basePrice * 1.18); %>
+              <span class="font-extrabold text-gray-900 text-lg price-base">&#8377; <%= basePrice.toLocaleString("en-IN") %></span>
+              <span class="font-extrabold text-gray-900 text-lg price-tax hidden">&#8377; <%= taxPrice.toLocaleString("en-IN") %></span>
+              <span class="text-xs font-normal text-gray-500 tax-info">/ night</span>
+              <span class="text-[10px] font-semibold text-emerald-600 tax-badge hidden">+18% GST</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    <% } %>
+  </div>
+<% } %>
+
+<script>
+  function scrollCategoryFilter(amount) {
+    const container = document.getElementById('categoryFilterBar');
+    if (container) {
+      container.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  }
+
+  function toggleTaxDisplay() {
+    const isChecked = document.getElementById('taxToggle').checked;
+    const basePrices = document.querySelectorAll('.price-base');
+    const taxPrices = document.querySelectorAll('.price-tax');
+    const taxBadges = document.querySelectorAll('.tax-badge');
+
+    basePrices.forEach(el => isChecked ? el.classList.add('hidden') : el.classList.remove('hidden'));
+    taxPrices.forEach(el => isChecked ? el.classList.remove('hidden') : el.classList.add('hidden'));
+    taxBadges.forEach(el => isChecked ? el.classList.remove('hidden') : el.classList.add('hidden'));
+  }
+</script>

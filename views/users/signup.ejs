@@ -1,0 +1,79 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="max-w-md mx-auto py-8">
+  <div class="mb-4">
+    <button onclick="history.back()" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-700 hover:text-black hover:bg-gray-100 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+      <i data-lucide="arrow-left" class="w-4 h-4"></i>
+      <span>Back</span>
+    </button>
+  </div>
+
+  <div class="bg-white rounded-3xl p-8 border border-gray-200 shadow-md text-gray-800">
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 bg-red-50 text-[#fe424d] rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl font-bold">
+        <i class="fa-solid fa-user-plus"></i>
+      </div>
+      <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Create an Account</h2>
+      <p class="text-sm text-gray-500 mt-1">Join Wanderlust to explore & host unique stays</p>
+    </div>
+
+    <form action="/signup" method="POST" class="needs-validation space-y-5" novalidate>
+      <div>
+        <label for="username" class="block text-sm font-semibold text-gray-700 mb-1.5">Username</label>
+        <div class="relative flex items-center">
+          <input
+            name="username"
+            type="text"
+            placeholder="Choose a username"
+            class="form-control w-full rounded-xl border-gray-300 focus:border-[#fe424d] focus:ring-[#fe424d] p-3 !pl-11 text-sm border shadow-sm transition-all"
+            style="padding-left: 2.75rem !important;"
+            required
+          />
+          <i class="fa-regular fa-user absolute left-3.5 text-gray-400 text-sm pointer-events-none"></i>
+        </div>
+        <div class="valid-feedback text-xs text-emerald-600 mt-1">Looks good!</div>
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-semibold text-gray-700 mb-1.5">Email Address</label>
+        <div class="relative flex items-center">
+          <input
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            class="form-control w-full rounded-xl border-gray-300 focus:border-[#fe424d] focus:ring-[#fe424d] p-3 !pl-11 text-sm border shadow-sm transition-all"
+            style="padding-left: 2.75rem !important;"
+            required
+          />
+          <i class="fa-regular fa-envelope absolute left-3.5 text-gray-400 text-sm pointer-events-none"></i>
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+        <div class="relative flex items-center">
+          <input
+            name="password"
+            type="password"
+            placeholder="Create a strong password"
+            class="form-control w-full rounded-xl border-gray-300 focus:border-[#fe424d] focus:ring-[#fe424d] p-3 !pl-11 text-sm border shadow-sm transition-all"
+            style="padding-left: 2.75rem !important;"
+            required
+          />
+          <i class="fa-solid fa-lock absolute left-3.5 text-gray-400 text-sm pointer-events-none"></i>
+        </div>
+      </div>
+
+      <button class="w-full py-3 bg-[#fe424d] text-white font-bold rounded-xl hover:bg-[#e0323d] transition-all shadow-md hover:shadow-lg border-0 cursor-pointer text-base">
+        Sign Up
+      </button>
+
+      <div class="text-center pt-3 border-t border-gray-100 mt-6">
+        <p class="text-xs text-gray-500">
+          Already have an account? 
+          <a href="/login" class="text-[#fe424d] font-semibold hover:underline">Log in here</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

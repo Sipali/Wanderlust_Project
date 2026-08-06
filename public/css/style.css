@@ -1,0 +1,68 @@
+/* Typography & Global Layout */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+/* Accessibility Focus Visible Ring */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid #fe424d !important;
+    outline-offset: 2px !important;
+}
+
+/* Hide scrollbar for category filter bar while maintaining scroll */
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Input Focus Glows & Custom Form Control Override */
+.form-control:focus, .form-select:focus {
+    border-color: #fe424d !important;
+    box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.15) !important;
+    outline: none !important;
+}
+
+/* Listing Links */
+.listing-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block;
+}
+
+/* Toast Progress Bar Keyframe Animation */
+@keyframes toastProgress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.animate-toast-progress {
+  animation: toastProgress 4s linear forwards;
+}
+
+.add-btn:hover, .edit-btn:hover, .btn-brand:hover {
+    background-color: #e0323d !important;
+    transform: translateY(-1px);
+}
+
+/* Smooth Transitions */
+* {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
